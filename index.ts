@@ -183,3 +183,48 @@ class LSSNode {
         return this 
     }
 }
+
+class LSquareShrink {
+
+    curr : LSSNode = new LSSNode(0)
+    dir : number = 1
+
+    draw(context : CanvasRenderingContext2D) {
+        this.curr.draw(context)
+    }
+
+    update(cb : Function) {
+        this.curr.update(() => {
+            this.curr = this.curr.getNext(this.dir, () => {
+                this.dir *= -1
+            })
+            cb()
+        })
+    }
+
+    startUpdating(cb : Function) {
+        this.curr.startUpdating(cb)
+    }
+}
+
+class Renderer {
+
+    lss : LSquareShrink = new LSquareShrink()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.lss.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.lss.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.lss.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
