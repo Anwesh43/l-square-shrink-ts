@@ -21,7 +21,7 @@ class ScaleUtil {
     }
 
     static divideScale(scale : number, i : number, n : number) : number {
-        return Math.min(1 / n, ScaleUtil.maxScale(scale, i, n))
+        return Math.min(1 / n, ScaleUtil.maxScale(scale, i, n)) * n 
     }
 }
 
@@ -46,7 +46,7 @@ class DrawingUtil {
         context.scale(1 - sc4, 1 - sc4)
         for (var j = 0; j < 2; j++) {
             context.save()
-            context.rotate(Math.PI * sc3)
+            context.rotate(Math.PI * sc3 * j)
             for (var k = 0; k < 2; k++) {
                 context.save()
                 context.translate(-size / 2, size / 2)
